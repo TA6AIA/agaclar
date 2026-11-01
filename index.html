@@ -53,10 +53,10 @@
         <h2 id="agac-adi">YÜKLENİYOR...</h2>
         
         <div id="player-area">
-            <!-- MPEG formatı için uygun tip tanımlaması -->
+            <!-- MP3 formatı için tip tanımlaması -->
             <audio id="audio-player" controls>
-                <source id="audio-source" src="" type="video/mpeg">
-                Tarayıcınız ses/video öğesini desteklemiyor.
+                <source id="audio-source" src="" type="audio/mpeg">
+                Tarayıcınız ses öğesini desteklemiyor.
             </audio>
         </div>
     </div>
@@ -64,12 +64,7 @@
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            let agacId = urlParams.get('spor'); // İsterseniz burayı urlParams.get('agac') yapabilirsiniz
-
-            // Eğer QR kodlarında '?agac=meselik' şeklinde kullanacaksanız üstteki satırı 'agac' yapın:
-            if (!agacId) {
-                agacId = urlParams.get('agac');
-            }
+            let agacId = urlParams.get('agac');
 
             const agacAdiElement = document.getElementById('agac-adi');
             const playerElement = document.getElementById('audio-player');
@@ -79,14 +74,14 @@
                 // Türkçe karakter ve boşluk düzenlemesi
                 agacId = decodeURIComponent(agacId).toLowerCase().trim();
                 
-                // Başlıktaki alt çizgileri boşluğa çevir
+                // Başlıktaki alt çizgileri boşluğa çevirip ekrana yaz
                 let temizAd = agacId.replace(/_/g, ' ');
                 agacAdiElement.innerText = temizAd;
                 
-                // Dosya adını ve .mpeg uzantısını birleştir (Örn: meselik.mpeg)
-                sourceElement.setAttribute('src', agacId + '.mpeg');
+                // Dosya uzantısını .mp3 olarak ayarlıyoruz
+                sourceElement.setAttribute('src', agacId + '.mp3');
                 
-                // Oynatıcıyı güncelle
+                // Oynatıcıyı yenile
                 playerElement.load();
             } else {
                 agacAdiElement.innerHTML = "<span class='error'>GEÇERSİZ QR KOD!</span>";
