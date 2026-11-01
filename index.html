@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ağaçlar Ses Rehberi</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .player-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+        h2 { 
+            color: #333333; 
+            margin-bottom: 20px; 
+            font-size: 22px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            word-wrap: break-word;
+        }
+        audio { 
+            width: 100%; 
+            margin-top: 15px; 
+            outline: none;
+        }
+        .error { 
+            color: #d9534f; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="player-container">
+        <h2 id="agac-adi">YÜKLENİYOR...</h2>
+        
+        <div id="player-area">
+            <!-- MPEG formatı için uygun tip tanımlaması -->
+            <audio id="audio-player" controls>
+                <source id="audio-source" src="" type="video/mpeg">
+                Tarayıcınız ses/video öğesini desteklemiyor.
+            </audio>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            let agacId = urlParams.get('spor'); // İsterseniz burayı urlParams.get('agac') yapabilirsiniz
+
+            // Eğer QR kodlarında '?agac=meselik' şeklinde kullanacaksanız üstteki satırı 'agac' yapın:
+            if (!agacId) {
+                agacId = urlParams.get('agac');
+            }
+
+            const agacAdiElement = document.getElementById('agac-adi');
+            const playerElement = document.getElementById('audio-player');
+            const sourceElement = document.getElementById('audio-source');
+
+            if (agacId) {
+                // Türkçe karakter ve boşluk düzenlemesi
+                agacId = decodeURIComponent(agacId).toLowerCase().trim();
+                
+                // Başlıktaki alt çizgileri boşluğa çevir
+                let temizAd = agacId.replace(/_/g, ' ');
+                agacAdiElement.innerText = temizAd;
+                
+                // Dosya adını ve .mpeg uzantısını birleştir (Örn: meselik.mpeg)
+                sourceElement.setAttribute('src', agacId + '.mpeg');
+                
+                // Oynatıcıyı güncelle
+                playerElement.load();
+            } else {
+                agacAdiElement.innerHTML = "<span class='error'>GEÇERSİZ QR KOD!</span>";
+                playerElement.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
